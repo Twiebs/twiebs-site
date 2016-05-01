@@ -1,5 +1,6 @@
 %title(Writing a new Game Engine)
 %date(2016,01,08)
+%permalink(2016-01-08)
 
 A year ago I started writing a 3D game engine.  Today I started writing a new 3D game engine from scratch using none of the code from the previous incardination.
 This is because the original engine which I had dubbed "Raptor" was written to be very modular and generic.

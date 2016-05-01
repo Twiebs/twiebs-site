@@ -1,6 +1,5 @@
-#About
 
-----
+%begin_content()
 
 My name is Torin Wiebelt.
 I am a self taught 21 year old C/C++ programmer, also experienced in programming with Java, C#, Python and x86 assembly.
@@ -11,16 +10,12 @@ I maintain a strong passion for creating games today, but my intrest has shifted
 
 What I am currently working on:
 
-- Raptor Game Framework and Engine
-- Experimental compiled language (LLVM backend)
+- Site Generator C Tool
 - TJW-OS: x86 Operating System
 
-Check out my [Projects](/projects/) page for more current and past projects.
+Check out my [Projects](projects.html) page for more current and past projects.
 
-[Click here to view my Resume]({{site.url}}/resume.pdf)
- 
-### Contact me
+###Contact Me
 
-[torinwiebelt@gmail.com](mailto:torinwiebelt@gmail.com)
+%end_content()
 
-----

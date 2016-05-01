@@ -1,5 +1,6 @@
 %title(Hotloading OpenGL Procedures with C preprocessor metaprograming)
 %date(2016,01,22)
+%permalink(2016-01-22)
 
 One of the important features that I wanted when creating this new iteration of my game engine
 Was the ablity to hotload code while the engine is still running.  I wanted this system to be as maximaly flexiable
@@ -7,6 +8,7 @@ as possible.  I really wanted to be able to hotload code that contained OpenGL f
 OpenGL function hotloading in the Venom game engine.
 
 ##C Preprocessor Metaprograming
+
 
 The problem is that when the dll containing the game code is realoaded after compilation functions that
 exist in the engine's executable will not be avaible to it.  OpenGL functions are loaded in the engine
