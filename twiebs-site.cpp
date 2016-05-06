@@ -73,7 +73,8 @@ cstr_push_to_buffer(char **dest, const char *src) {
 	return result;
 }
 
-static const char* MONTH_STRINGS[] {
+static const char* MONTH_STRINGS[] 
+{
   "NULLMONTH",
   "January",
   "Febuary",
@@ -94,7 +95,6 @@ void InsertDateTag(const sg_MarkdownProcedureCall& call) {
 	int month_index = std::stoi(call.args[1].text);
 	sg_h(5, "%.*s %s, %d", call.args[2].text_length, call.args[2].text, MONTH_STRINGS[month_index], std::stoi(call.args[0].text));
 }
-//#define sg_html sg_html_fmt
 
 int main()
 {
@@ -142,6 +142,8 @@ int main()
 
 						sg_MarkdownProcedureCall& call = parse_info.procedure_call;
 						if (str_match_literal(call.name, call.name_length, "title")) {
+              sg_set_next_class("post-header");
+              sg_begin_div();
 							post_info[post_index].title = str_push_to_buffer_as_cstr(
 									&buffer_write, call.args[0].text, call.args[0].text_length);
 							sg_set_document_title(post_info[post_index].title);
@@ -153,6 +155,7 @@ int main()
               p.day  = string_to_uint64(call.args[2].text, call.args[2].text_length);
               p.dateComparator = (p.year * 366) + (p.month * 32) + (p.day);
 							InsertDateTag(call);
+              sg_end_div();
 						} else if (str_match_literal(call.name, call.name_length, "permalink")) {
 							post_info[post_index].permalink = str_push_to_buffer_as_cstr(
 									&buffer_write, call.args[0].text, call.args[0].text_length);
@@ -248,40 +251,43 @@ int main()
       sg_end_div();
       sg_end_document();
     }
+
     { //@Generate @Site @Index
-        sg_begin_document();
-        sg_set_document_title_fmt("Torin Wiebelt's Blog");
-        sg_set_document_description_fmt("Torin wiebelts awesome blog and portfolio");
-        sg_set_document_filename("index.html");
-        sg_add_stylesheet_cstr("style.css");
+      sg_begin_document();
+      sg_set_document_title("Torin Wiebelt's Blog");
+      sg_set_document_description("Torin wiebelts awesome blog and portfolio");
+      sg_set_document_filename("index.html");
+      sg_add_stylesheet_cstr("style.css");
+      twiebs_site_navigation();
 
-				twiebs_site_navigation();
-				//sg_h(1, "Recent Posts");
+      for (uint32_t i = 0; i < post_index; i++) {
+        char *data = read_file_into_memory_and_null_terminate(post_info[i].filepath);
+        sg_set_next_class("content");
+        sg_begin_div();
+        sg_set_next_class("post-header");
+        sg_begin_div();
+        sg_begin_a_fmt("%s.html", post_info[i].permalink);
+        sg_h(1,post_info[i].title);
+        sg_end_a();
 
-				for (uint32_t i = 0; i < post_index; i++) {
-					char *data = read_file_into_memory_and_null_terminate(post_info[i].filepath);
-					sg_set_next_class_fmt("content");
-					sg_begin_div();
-					sg_begin_a_fmt("%s.html", post_info[i].permalink);
-					sg_h(1,post_info[i].title);
-					sg_end_a();
+        sg_parser_begin(data);
+        sg_Markdown_Result parse_result;
+        while (sg_parse_markdown(&parse_result)) { 
 
-					sg_parser_begin(data);
-          sg_Markdown_Result parse_result;
-					while (sg_parse_markdown(&parse_result)) { 
-						if (parse_result.type = SG_MARKDOWN_PROCEDURE) {
-							if (str_match_literal(parse_result.procedure_call.name, parse_result.procedure_call.name_length, "date")) {
-								InsertDateTag(parse_result.procedure_call);
-							}
-						}
-					}
-          sg_parser_end();
-					sg_end_div();
-					free(data);
-				}
-        sg_end_document();
+          if (parse_result.type = SG_MARKDOWN_PROCEDURE) {
+            if (str_match_literal(parse_result.procedure_call.name, parse_result.procedure_call.name_length, "date")) {
+              InsertDateTag(parse_result.procedure_call);
+              sg_end_div();
+            }
+          }
+        }
+        sg_parser_end();
+        sg_end_div();
+        free(data);
+      }
+      sg_end_document();
     }
-   
+ 
     //sg_CopyFiles();
     return 0;
 }

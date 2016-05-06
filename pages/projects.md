@@ -10,8 +10,9 @@
 - Watch window
 - Stack frame
 
-%end_content()
+[Source Code](http://github.com/twiebs/debugger)
 
+%end_content()
 
 %begin_content()
 
@@ -31,6 +32,9 @@ to generate webpages.  This data driven interface allows html generation based o
 
 You can check out an example of how this tool is used by taking a look at the source code used for this
 website.
+
+[This blogs source code](http://github.com/twiebs)
+[site_generator.h](http://github.com/twiebs/single-file-libraries/site_generator.h)
 
 %end_content()
 
